@@ -117,7 +117,6 @@ pip install -r requirements.txt
 4. Create `.env` file with required credentials:
 ```env
 TELEGRAM_BOT_TOKEN=your_telegram_bot_token
-TELEGRAM_CHAT_ID=your_chat_id
 MORALIS_API_KEY=your_moralis_api_key
 ```
 
