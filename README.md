@@ -209,7 +209,3 @@ For issues and feature requests:
 2. Create detailed bug report
 3. Include error logs
 4. Provide reproduction steps 
-=======
-# crypto-wallet-monitor
-A powerful Telegram bot for monitoring cryptocurrency wallets across multiple blockchains. The bot tracks wallet activities, detects transactions, and provides real-time notifications about token movements.
->>>>>>> af00635dc20566bbd5c46a125d0a9ec5998b18a8
