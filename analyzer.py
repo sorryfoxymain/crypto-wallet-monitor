@@ -43,13 +43,13 @@ class AnalyzerExtended:
             transactions = self.storage.get_recent_transactions(wallet, limit)
             all_transactions.extend(transactions)
         
-        # Sort by time (newest first)
+        
         return sorted(all_transactions, key=lambda x: x.timestamp, reverse=True)[:limit]
 
     async def get_wallet_info(self, wallet_address: str) -> Optional[WalletBalance]:
         """Get complete wallet information."""
         try:
-            # Get current balances
+            
             balances = await self.moralis_api.get_token_balances(wallet_address)
             
             tokens = []
@@ -67,7 +67,7 @@ class AnalyzerExtended:
                 tokens.append(token)
                 total_value += token.total_value_usd
             
-            # Calculate total PnL
+            
             pnl = await self.calculate_total_pnl(wallet_address)
             
             return WalletBalance(
@@ -85,7 +85,7 @@ class AnalyzerExtended:
         transactions = self.storage.get_recent_transactions(wallet_address, limit=1000)
         total_pnl = 0.0
         
-        # Dictionary to track token purchases
+        
         token_buys: Dict[str, List[Tuple[float, float]]] = {}
         
         for tx in sorted(transactions, key=lambda x: x.timestamp):
@@ -95,7 +95,7 @@ class AnalyzerExtended:
                 token_buys[tx.token_id].append((tx.amount_change, tx.price_usd))
             elif tx.transaction_type == "sell":
                 if tx.token_id in token_buys and token_buys[tx.token_id]:
-                    # FIFO for PnL calculation
+                    
                     buy_amount, buy_price = token_buys[tx.token_id].pop(0)
                     pnl = (tx.price_usd - buy_price) * min(abs(tx.amount_change), buy_amount)
                     total_pnl += pnl
@@ -110,7 +110,7 @@ class AnalyzerExtended:
         
         if sort_by == 'value':
             sorted_tokens = sorted(wallet_info.tokens, key=lambda x: x.total_value_usd, reverse=True)
-        else:  # sort by amount
+        else:  
             sorted_tokens = sorted(wallet_info.tokens, key=lambda x: x.amount, reverse=True)
         
         return sorted_tokens[:limit]
