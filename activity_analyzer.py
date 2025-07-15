@@ -18,13 +18,13 @@ class ActivityAnalyzer:
         Returns:
             List[WalletTransaction]: List of detected transactions
         """
-        # Get current token balances
+       
         current_balances = await self.moralis_api.get_token_balances(wallet_address)
         detected_transactions = []
         
-        # Process each current balance
+        
         for balance in current_balances:
-            # Get previous state of this token
+            
             prev_state = self.storage.get_token_state(
                 wallet_address=wallet_address,
                 token_id=balance['id'],
@@ -36,7 +36,7 @@ class ActivityAnalyzer:
                 detected_transactions.append(transaction)
                 self.storage.record_transaction(transaction)
             
-            # Update token state in storage
+            
             self.storage.update_token_state(
                 wallet_address=wallet_address,
                 token_id=balance['id'],
@@ -58,7 +58,7 @@ class ActivityAnalyzer:
         Detect a transaction by comparing current and previous token states.
         """
         if not prev_state:
-            # New token appeared - this is a purchase
+            
             if current_balance['amount'] > 0:
                 return WalletTransaction(
                     wallet_address=wallet_address,
@@ -76,8 +76,8 @@ class ActivityAnalyzer:
         prev_amount = prev_state['amount']
         amount_change = current_balance['amount'] - prev_amount
         
-        # Define thresholds for significant changes
-        SIGNIFICANT_CHANGE_THRESHOLD = 0.001  # 0.1% of previous amount
+        
+        SIGNIFICANT_CHANGE_THRESHOLD = 0.001  
         significant_change = abs(amount_change) > (prev_amount * SIGNIFICANT_CHANGE_THRESHOLD)
         
         if not significant_change:
@@ -85,7 +85,7 @@ class ActivityAnalyzer:
             
         transaction_type = "buy" if amount_change > 0 else "sell"
         
-        # For sales, use absolute value of change
+        
         amount_change_abs = abs(amount_change)
         total_value = amount_change_abs * current_balance['price']
         
@@ -108,7 +108,7 @@ class ActivityAnalyzer:
         if transaction.transaction_type != "sell":
             return None
             
-        # Get recent buy transactions for this token
+        
         recent_transactions = self.storage.get_recent_transactions(transaction.wallet_address)
         buy_transactions = [
             t for t in recent_transactions 
@@ -120,12 +120,12 @@ class ActivityAnalyzer:
         if not buy_transactions:
             return None
             
-        # Use last purchase price to calculate PnL
+        
         last_buy = buy_transactions[0]
         pnl = (transaction.price_usd - last_buy.price_usd) * transaction.amount_change
         return pnl
 
-# Example usage
+
 if __name__ == "__main__":
     import asyncio
     from config import MORALIS_API_KEY
@@ -135,7 +135,7 @@ if __name__ == "__main__":
         storage = Storage()
         analyzer = ActivityAnalyzer(moralis, storage)
         
-        # Test wallet address
+        
         test_wallet = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
         
         print(f"Analyzing wallet {test_wallet}...")
