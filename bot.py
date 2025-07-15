@@ -5,10 +5,10 @@ import aiohttp
 from dotenv import load_dotenv
 from custom_telegram import CustomBot
 
-# Load environment variables
+
 load_dotenv()
 
-# Enable logging with more detailed output
+
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.DEBUG,
@@ -56,7 +56,7 @@ async def balance_command(bot: CustomBot, chat_id: int, address: str = None):
         )
         return
     
-    # Temporary response for testing
+  
     await bot.send_message(
         chat_id=chat_id,
         text=f"Getting balance for address: {address}\nThis feature will be implemented soon."
@@ -65,7 +65,7 @@ async def balance_command(bot: CustomBot, chat_id: int, address: str = None):
 async def wallets_command(bot: CustomBot, chat_id: int):
     """Handle the wallets command."""
     logger.debug(f"Executing wallets command for chat_id: {chat_id}")
-    # Temporary response for testing
+   
     await bot.send_message(
         chat_id=chat_id,
         text="List of monitored wallets will be shown here.\nThis feature will be implemented soon."
@@ -81,7 +81,7 @@ async def add_wallet_command(bot: CustomBot, chat_id: int, address: str = None):
         )
         return
     
-    # Temporary response for testing
+    
     await bot.send_message(
         chat_id=chat_id,
         text=f"Adding wallet: {address}\nThis feature will be implemented soon."
@@ -97,7 +97,7 @@ async def remove_wallet_command(bot: CustomBot, chat_id: int, address: str = Non
         )
         return
     
-    # Temporary response for testing
+    
     await bot.send_message(
         chat_id=chat_id,
         text=f"Removing wallet: {address}\nThis feature will be implemented soon."
@@ -113,7 +113,7 @@ async def transactions_command(bot: CustomBot, chat_id: int, address: str = None
         )
         return
     
-    # Temporary response for testing
+    
     await bot.send_message(
         chat_id=chat_id,
         text=f"Getting transactions for address: {address}\nThis feature will be implemented soon."
@@ -128,13 +128,13 @@ async def message_handler(bot: CustomBot, chat_id: int, text: str):
         return
 
     try:
-        # Split message into command and arguments
+        
         parts = text.strip().split()
         command = parts[0].lower() if parts else ""
         args = parts[1:] if len(parts) > 1 else []
         arg = args[0] if args else None
 
-        # Command handling
+        
         if command == '/start':
             await start_command(bot, chat_id)
         elif command == '/help':
@@ -173,7 +173,7 @@ async def main():
     logger.info(f"Starting bot with token: {token[:5]}...")
     bot = CustomBot(token)
     
-    # Test the bot token
+    
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(f"{bot.base_url}/getMe") as response:
